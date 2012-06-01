@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 
@@ -41,16 +42,16 @@ inline string cut(string toCut, int loc){
 }
 
 
-int parseFile(string filename, PAIR **words){
-	ifstream inputFile(filename.c_str());
-	int num;
-	inputFile >> num;
+int parseInput(PAIR **words){
+    istream *inf;
+    inf = &cin;
+    int num;
+    *inf >> num;
 	PAIR *wordSet = new PAIR[num];
 	for (int i = 0; i < num; i++)
-		inputFile >> wordSet[i].word1 >> wordSet[i].word2;
+		*inf >> wordSet[i].word1 >> wordSet[i].word2;
 	
 	*words = wordSet;
-	inputFile.close();
 	return num;
 }
 
@@ -77,10 +78,17 @@ int CLCS(string longWord, string shortWord){
 }
 
 
-int main() {
+int main(int argc, const char* argv[]) {
 	
 	PAIR *words;
-	int num = parseFile("sample.in", &words);
+	int pfds[1];
+	
+	//char filename[30];
+	
+	//read(0, filename, sizeof(filename));
+	//printf("filename: %s\n", filename);
+	
+	int num = parseInput(&words);
 	
 	for (int i = 0; i < num; i++){
 		cout << CLCS(words[i].word1, words[i].word2) << endl;
