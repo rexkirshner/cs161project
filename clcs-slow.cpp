@@ -83,11 +83,6 @@ int main(int argc, const char* argv[]) {
 	PAIR *words;
 	int pfds[1];
 	
-	//char filename[30];
-	
-	//read(0, filename, sizeof(filename));
-	//printf("filename: %s\n", filename);
-	
 	int num = parseInput(&words);
 	
 	for (int i = 0; i < num; i++){
