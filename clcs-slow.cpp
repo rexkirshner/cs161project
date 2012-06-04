@@ -1,6 +1,6 @@
 //Rex Kirshner, rbk, 05580888
 //Taylor Savage, tjsavage, 05575939
-//Matthew Alexander, 
+//Matthew Alexander, mwalex, 05605180
 
 #include <algorithm>
 #include <iostream>

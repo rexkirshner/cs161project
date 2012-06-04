@@ -1,6 +1,6 @@
 //Rex Kirshner, rbk, 05580888
 //Taylor Savage, tjsavage, 05575939
-//Matthew Alexander, 
+//Matthew Alexander, mwalex, 05605180
 
 #include <algorithm>
 #include <iostream>
@@ -112,15 +112,6 @@ void resetPath(Path &p) {
 }
 
 void singleShortestPath(string A, string B, int m, Path &left_path, Path &right_path, Path &dest) {
-    
-    //printf("\nLooking for path starting at %d\n", m);
-    //printf("Left bound path: \n");
-    //printPath(left_path);
-    //printf("\nRight bound path:\n");
-    //printPath(right_path);
-    
-    //resetGrid(A.length(), B.length());
-    
     for (int i = 0; i <= A.length(); i++) arr[i][m] = 0;
     for (int j = m; j <= m + B.length() / 2; j++) arr[0][j] = 0;
     
@@ -134,26 +125,18 @@ void singleShortestPath(string A, string B, int m, Path &left_path, Path &right_
                 arr[row][col] = arr[row][col - 1];
             } else if (right_path.right_bounds[row - 1] >= col ) { //The node up is in-bounds
                 arr[row][col] = arr[row - 1][col];
-            } else {
-                //Shit... we have nothing to compare to except the diagonal
-                //Setting a sentinel to check if we fucked up.
-                arr[row][col] = -2;
             }
+            
             if (A[row - 1] == B[col - 1] && left_path.left_bounds[row - 1] <= col - 1 && right_path.right_bounds[row - 1] >= col - 1) {
                 arr[row][col] = max(arr[row][col], arr[row - 1][col - 1] + 1);
             }
-            if (arr[row][col] == -2) {
-                printf("Messed up creating grid... nothing in bounds!\n");
-                printf("Row: %d Col: %d\n", row, col);
-                exit(1);
-            }
+
         }
     }
-    //printGrid(A, B, 0, 0, A.length(), B.length());
     
     int col = m + B.length() / 2;
     int row = A.length();
-    //resetPath(dest);
+
     dest.left_bounds[row] = col;
     dest.right_bounds[row] = col;
     dest.value = 0;
@@ -173,22 +156,10 @@ void singleShortestPath(string A, string B, int m, Path &left_path, Path &right_
             dest.left_bounds[row] = col;
             dest.right_bounds[row - 1] = col;
             row--;
-        } else {
-            printf("Path out of bounds!\n");
-            exit(1);
-            break;
         }
-        //printf("Col: %d, row: %d \n", col, row);
     }
     dest.left_bounds[0] = m;
-    /*
-    if (col == m + 1 && row == 0) {
-        dest.left_bounds[0] = m;
-    }
-    */
-    
-    //cout << "final path: " << endl;
-    //printPath(dest);
+
 }
 
 void fullShortestPaths(string A, string B, Path &left_dest, Path &right_dest) {
@@ -206,13 +177,10 @@ void fullShortestPaths(string A, string B, Path &left_dest, Path &right_dest) {
             }
         }
     }
-    
-    //printGrid(A, B, 0, 0, A.length(), B.length());
-    
+        
     int col = B.length() / 2;
     int row = A.length();
-    //resetPath(left_dest);
-    //resetPath(right_dest);
+
     left_dest.left_bounds[row] = col; right_dest.left_bounds[row] = col + n;
     left_dest.right_bounds[row] = col; right_dest.right_bounds[row] = col + n;
     left_dest.value = 0; right_dest.value = 0;
@@ -232,17 +200,10 @@ void fullShortestPaths(string A, string B, Path &left_dest, Path &right_dest) {
             left_dest.left_bounds[row] = col; right_dest.left_bounds[row] = col + n;
             left_dest.right_bounds[row-1] = col; right_dest.right_bounds[row - 1] = col + n;
             row--;
-        } else {
-            printf("Shit, there's no path in bounds on the original paths.\n");
-            printf("Row: %d Col: %d\n", row, col);
-            exit(1);
         }
     }
     left_dest.left_bounds[0] = 0; right_dest.left_bounds[0] = B.length() / 2;
-    
-    //printGrid(A, B, 0, 0, A.length(), B.length());
-    //printPath(left_dest);
-    //printPath(right_dest);
+
 }
 
 
@@ -250,8 +211,7 @@ void fullShortestPaths(string A, string B, Path &left_dest, Path &right_dest) {
 void findShortestPaths(string A, string B, Path *p, int l, int r) {
     if (r - l <=1) return;
     int m = (l + r) / 2;
-    //resetGrid(A.length(), B.length());
-    //cout << "ssp: " << m << " " << l << " " << r << endl;
+
     singleShortestPath(A, B, m, p[l], p[r], p[m]);
     findShortestPaths(A, B, p, l, m);
     findShortestPaths(A, B, p, m, r);
@@ -268,8 +228,6 @@ int CLCS(const string A, const string B){
     //now we need to find the best valued path
     int best_value = 0;
     for(int i = 0; i <= B.length(); i++) {
-        //cout << "Comparing: " << A << " " << cut(B, i) << endl;
-        //printf("Path Value: %d\n", p[i].value);
         if (p[i].value > best_value) {
             best_value = p[i].value;
         }
@@ -286,7 +244,6 @@ int main(int argc, const char* argv[]) {
 	int num = parseInput(&words);
 
 	for (int i = 0; i < num; i++){
-	    //cout << words[i].word1 << " " << words[i].word2 << endl;
 		cout << CLCS(words[i].word1, words[i].word2) << endl;
 	}
 }
