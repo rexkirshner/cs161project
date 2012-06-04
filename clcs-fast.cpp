@@ -1,3 +1,7 @@
+//Rex Kirshner, rbk, 05580888
+//Taylor Savage, tjsavage, 05575939
+//Matthew Alexander, 
+
 #include <algorithm>
 #include <iostream>
 #include <fstream>
